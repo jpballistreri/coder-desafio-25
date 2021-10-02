@@ -26,7 +26,12 @@ router.get("/productos/:id", async (req, res) => {
   });
 });
 
-router.post("/productos/", async (req, res) => {
+const validateLogIn = (req, res, next) => {
+  if (req.session.loggedIn) next();
+  else res.redirect("/productos/login");
+};
+
+router.post("/productos/", validateLogIn, async (req, res) => {
   const { title, price, thumbnail } = req.body;
   //Validar datos ingresados
   if (

@@ -1,15 +1,16 @@
 import express from "express";
-import session from "express-session";
 import path from "path";
 import routerApi from "../routes/api.js";
 import web from "../routes/web.js";
+import MongoStore from "connect-mongo";
+import { DBSesiones } from "./db";
+import cookieParser from "cookie-parser";
+import session from "express-session";
 
 import { DBService, DBMensajesSqlite } from "./db";
 import * as http from "http";
 import { initWSServer } from "./socket";
-
-//DBService.init();
-//DBMensajesSqlite.init();
+import Config from "../../config";
 
 /** INICIALIZACION API con EXPRESS */
 const app = express();
@@ -30,15 +31,8 @@ initWSServer(myServer);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const oneMinute = 1000 * 60;
-app.use(
-  session({
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    cookie: { maxAge: oneMinute },
-    saveUninitialized: true,
-    resave: true,
-  })
-);
+app.use(cookieParser());
+app.use(session(DBSesiones));
 
 app.use("/api", routerApi);
 app.use("/productos", web);

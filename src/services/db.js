@@ -1,9 +1,9 @@
 import knex from "knex";
 import dbConfig from "../../knexfile";
 import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
 import * as model from "../models/ecommerce";
 import Config from "../../config";
-//import { normalize, schema } from "normalizr";
 
 export const connectToDB = async () => {
   try {
@@ -67,39 +67,18 @@ class Mensajes {
   }
 }
 
-//class DBMensajes {
-//  constructor() {
-//    const environment = process.env.NODE_ENV || "development_sqlite3";
-//    console.log(`SETTING ${environment} DB`);
-//    const options = dbConfig[environment];
-//    this.connection = knex(options);
-//  }
-//
-//  init() {
-//    this.connection.schema.hasTable("mensajes").then((exists) => {
-//      if (exists) return;
-//      console.log("Creamos la tabla mensajes!");
-//
-//      return this.connection.schema
-//        .createTable("mensajes", (mensajesTable) => {
-//          mensajesTable.increments();
-//          mensajesTable.string("email").notNullable();
-//          mensajesTable.string("date").notNullable();
-//          mensajesTable.string("texto");
-//        })
-//        .then(() => {
-//          console.log("Done");
-//        });
-//    });
-//  }
-
-//  async get(tableName) {
-//    return this.connection(tableName);
-//  }
-//  async create(tableName, data) {
-//    return this.connection(tableName).insert(data);
-//  }
-//}
-
 export const DBProductos = new Productos();
 export const DBMensajes = new Mensajes();
+
+export const DBSesiones = {
+  store: MongoStore.create({
+    mongoUrl: `mongodb+srv://${Config.MONGO_ATLAS_USER}:${Config.MONGO_ATLAS_PASSWORD}@${Config.MONGO_ATLAS_CLUSTER}/${Config.MONGO_ATLAS_DBNAME}?retryWrites=true&w=majority`,
+    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+  }),
+  secret: `${Config.SESSION_SECRET_KEY}`,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 5,
+  },
+};

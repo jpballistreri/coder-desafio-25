@@ -9,6 +9,7 @@ const venvs = {
   MONGO_ATLAS_PASSWORD: process.env.MONGO_ATLAS_PASSWORD || "mongoAtlasPass",
   MONGO_ATLAS_CLUSTER: process.env.MONGO_ATLAS_CLUSTER || "xxxxxmongoDb.net",
   MONGO_ATLAS_DBNAME: process.env.MONGO_ATLAS_DBNAME || "dbname",
+  SESSION_SECRET_KEY: process.env.SESSION_SECRET_KEY || "session secret key",
   PORT: process.env.PORT || 8080,
 };
 
