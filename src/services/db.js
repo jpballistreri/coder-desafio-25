@@ -79,6 +79,6 @@ export const DBSesiones = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 5,
+    maxAge: 10000 * 60,
   },
 };

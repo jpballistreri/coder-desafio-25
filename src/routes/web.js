@@ -39,7 +39,8 @@ router.post("/login", async (req, res) => {
 
 const validateLogIn = (req, res, next) => {
   if (req.session.loggedIn) next();
-  else res.redirect("/productos/login");
+  else res.render("login");
+  //Agregar render con error de fin de session
 };
 
 router.get("/logout", (req, res) => {
